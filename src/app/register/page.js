@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 
-const AddUser = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -30,20 +30,18 @@ const AddUser = () => {
       const formDataWithFile = new FormData();
       formDataWithFile.append('username', formData.username);
       formDataWithFile.append('password', formData.password);
-      formDataWithFile.append('image', formData.imageFile);
-      formDataWithFile.append('birthday', formData.birthday);
       formDataWithFile.append('email', formData.email);
       formDataWithFile.append('name', formData.name);
 
       // formDataWithFile'ı kullanarak API'ye POST isteği gönderin
-      const responseFromApi = await fetch('http://localhost:8083/api/users/addUser', {
+      const responseFromApi = await fetch('http://127.0.0.1:3000/auth/register', {
         method: 'POST',
         body: formDataWithFile
       }).then(response => {
         if (response.ok) {
           console.error('Kayıt BAŞARILI oldu');
           // Kayıt başarılıysa, başka bir sayfaya yönlendirin
-          window.location.href = '/users'; // Yönlendirilecek sayfayı belirleyin
+          //window.location.href = '/users'; // Yönlendirilecek sayfayı belirleyin
         } else {
           
           console.error('Kayıt BAŞARISIZ oldu : ' + response);
@@ -83,22 +81,7 @@ const AddUser = () => {
         />
         <br />
         <br />
-        <input
-          type="file"
-          name="imageFile"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-
-        <br />
-        <br />
-        <input
-          type="text"
-          name="birthday"
-          placeholder="Doğum Tarihi"
-          value={formData.birthday}
-          onChange={handleInputChange}
-        />
+      
         <br />
         <br />
         <input
@@ -125,5 +108,5 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default Register;
 
