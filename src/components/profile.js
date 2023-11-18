@@ -3,9 +3,8 @@ import React from 'react';
 import useStore from '../store/store';
 
 function Profile() {
-    const { user } = useStore();
-
-    console.log("user 2 : ", user);
+    const { user } = useStore.getState();
+    console.log("user 33: ", user);
 
     if (!user) {
         return <div>Kullanıcı bilgisi yükleniyor...</div>;
@@ -14,7 +13,15 @@ function Profile() {
     return (
         <div>
             <div className="list-group">
-                <div>Kullanıcı Adı: {user}</div>
+                <img
+                    src={`data:image/jpeg;base64,${user.image}`}
+                    alt={`${user.name}'s Profile`}
+                    style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '50%' }}
+                />                
+                <div style={{ textAlign: 'center' }}>{user.username}</div>
+                <div style={{ textAlign: 'center' }}>{user.name}</div>
+                <div style={{ textAlign: 'center' }}>{user.email}</div>
+                <br />
             </div>
         </div>
     );

@@ -2,27 +2,46 @@
 "use client"
 
 import React, { useState } from 'react';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import useStore from '../../store/store';
+import Link from 'next/link';
 
 const Register = () => {
+  const { setUser } = useStore();
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
-    image: '',
-    birthday: '',
-    email: '',
     name: '',
+    email: ''
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFormData({ ...formData, imageFile: selectedFile });
+  const login = async (formDataWithFile) => {
+
+    try {
+      const response = await axios.post('http://127.0.0.1:3000/auth/register', formDataWithFile);
+      
+      console.log("DATA : ", response);
+
+      if (response.status == 200) {
+        window.location.href = '/login'; 
+      } else {
+        //window.alert("kayıt yapılırken hata")
+      }
+    } catch (error) {
+      console.error('kayıt yapılırken hata oluştu:', error);
+
+      window.alert("kayıt yapılırken hata")
+    }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -30,80 +49,80 @@ const Register = () => {
       const formDataWithFile = new FormData();
       formDataWithFile.append('username', formData.username);
       formDataWithFile.append('password', formData.password);
-      formDataWithFile.append('email', formData.email);
       formDataWithFile.append('name', formData.name);
+      formDataWithFile.append('email', formData.email);
 
-      // formDataWithFile'ı kullanarak API'ye POST isteği gönderin
-      const responseFromApi = await fetch('http://127.0.0.1:3000/auth/register', {
-        method: 'POST',
-        body: formDataWithFile
-      }).then(response => {
-        if (response.ok) {
-          console.error('Kayıt BAŞARILI oldu');
-          // Kayıt başarılıysa, başka bir sayfaya yönlendirin
-          //window.location.href = '/users'; // Yönlendirilecek sayfayı belirleyin
-        } else {
-          
-          console.error('Kayıt BAŞARISIZ oldu : ' + response);
-        }
-      })
-      .then(result => console.log("result : ", result))
-      .catch(error => console.log('error : ', error));;    
-        
-      console.log("response : ", response, " - response ok : ", response.body);
-      
+      login(formDataWithFile);
     } catch (error) {
-      console.error('Kayıt hatası:', error);
+      console.error('giriş hatası:', error);
     }
   };
 
   return (
-    <div>
-      <h2>Kayıt Ol</h2>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <br />
+          <br />
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                className="form-control"
+                id="username"
+                name="username"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                name="name"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <br />
+            <button type="submit" className="btn btn-primary w-100 mt-3">Register</button>
+          </form>
+
+          <Link className="nav-link text-dark w-100 mt-3" href="/login" style={{textAlign: "center"}}>Login</Link>
+        </div>
+      </div>
       <br />
       <br />
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Kullanıcı Adı"
-          value={formData.username}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
-        <input
-          type="password"
-          name="password"
-          placeholder="Şifre"
-          value={formData.password}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
-      
-        <br />
-        <br />
-        <input
-          type="email"
-          name="email"
-          placeholder="E-Posta"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
-        <input
-          type="text"
-          name="name"
-          placeholder="Ad Soyad"
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
-        <button type="submit">Kayıt Ol</button>
-      </form>
     </div>
   );
 };

@@ -2,7 +2,7 @@
 import React from 'react';
 
 function TopicList() {
-    const topics = ["Gündem", "Spor", "Dünya", "Trendler", "Akademik", "Yazılım"];
+    const topics = ["Trends", "Sport", "World", "Academic", "Software"];
 
     return (
         <div>

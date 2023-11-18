@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useStore from '../../store/store';
-
+import Link from 'next/link';
 
 const Login = () => {
   const { setUser } = useStore();
@@ -33,15 +33,17 @@ const Login = () => {
         window.localStorage.token = response.data.token;
         console.log("user 1 : ", response.data.user.name);
 
-        window.localStorage.username = response.data.user["username"];
-
-        console.log("user 1 : ", response.data.user);
-
         if (response.data && response.data.user) {
+          console.log("user 1 : ", response.data.user);
+
+          window.localStorage.user = JSON.stringify(response.data.user);
+
           setUser(response.data.user);
+
+          console.log("user 11111111 : ");
         }
 
-        //window.location.href = '/'; 
+        window.location.href = '/'; 
       } else {
         //window.alert("giriş yapılırken hata")
       }
@@ -98,6 +100,8 @@ const Login = () => {
             </div>
             <button type="submit" className="btn btn-primary w-100 mt-3">Giriş Yap</button>
           </form>
+
+          <Link className="nav-link text-dark w-100 mt-3" href="/register" style={{textAlign: "center"}}>Register</Link>
         </div>
       </div>
       <br />
