@@ -22,7 +22,6 @@ const Login = () => {
   };
 
   const login = async (formDataWithFile) => {
-
     try {
       const response = await axios.post('http://127.0.0.1:3000/auth/login', formDataWithFile);
       
@@ -52,6 +51,37 @@ const Login = () => {
 
       window.alert("giriş yapılırken hata")
     }
+  };
+
+  const loginViaGoogle = async () => {
+    window.location.href = 'http://127.0.0.1:3000/auth/google';
+
+    /*
+    try {
+      const response = await axios.get('http://127.0.0.1:3000/auth/google');
+      
+      console.log("DATA : ", response);
+
+      window.localStorage.token = response.data.token;
+      console.log("user 1 : ", response.data.user.name);
+
+      if (response.data && response.data.user) {
+        console.log("user 1 : ", response.data.user);
+
+        window.localStorage.user = JSON.stringify(response.data.user);
+
+        setUser(response.data.user);
+
+        console.log("user 11111111 : ");
+      }
+
+      window.location.href = '/'; 
+    } catch (error) {
+      console.error('google ile giriş yapılırken hata oluştu:', error);
+
+      //window.alert("google ile giriş yapılırken hata")
+    }
+    */
   };
 
   const handleSubmit = async (e) => {
@@ -102,6 +132,9 @@ const Login = () => {
           </form>
 
           <Link className="nav-link text-dark w-100 mt-3" href="/register" style={{textAlign: "center"}}>Register</Link>
+          <br />
+          <h3 className="nav-link text-dark w-100 mt-3" style={{textAlign: "center"}} onClick={loginViaGoogle}>Google ile kaydol</h3>
+
         </div>
       </div>
       <br />

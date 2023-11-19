@@ -13,11 +13,22 @@ function Profile() {
     return (
         <div>
             <div className="list-group">
-                <img
-                    src={`data:image/jpeg;base64,${user.image}`}
-                    alt={`${user.name}'s Profile`}
-                    style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '50%' }}
-                />                
+                {
+                    user.image.indexOf("http") === 0 ?
+                    (
+                        <img 
+                            src={user.image}
+                            style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '50%' }}
+                        />
+                    ) :
+                    (
+                        <img 
+                            src={`data:image/jpeg;base64,${user.image}`}
+                            style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '50%' }}
+                        />
+                    )
+                }
+       
                 <div style={{ textAlign: 'center' }}>{user.username}</div>
                 <div style={{ textAlign: 'center' }}>{user.name}</div>
                 <div style={{ textAlign: 'center' }}>{user.email}</div>
