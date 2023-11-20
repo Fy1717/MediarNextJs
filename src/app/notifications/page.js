@@ -1,13 +1,27 @@
 // pages/notifications.js
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NotificationList from '../../components/notificationList';
 import NotificationModal from '../../components/notificationModel';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+import socketClient from '../socketClient';
+
 
 const NotificationsPage = () => {
+  const currentUserIdStr = JSON.stringify(JSON.parse(window.localStorage.user)["id"]);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = socketClient(currentUserIdStr);
+    setSocket(newSocket);
+
+    newSocket.on('new_follower', (data) => {
+      console.log('New follower:', data);
+      // Burada yeni takipçi olayını işleyebilirsiniz
+    });
+  }, []);
+
   const [notifications] = useState([
     {
         userName: 'Ali Ekber Güvercin',
