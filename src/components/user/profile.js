@@ -1,13 +1,13 @@
 // src/components/ArticleList.js
 import React from 'react';
-import useStore from '../store/store';
+import useStore from '../../store/store';
 
 function Profile() {
     const { user } = useStore.getState();
-    console.log("user 33: ", user);
+    //console.log("user 33: ", user);
 
     if (!user) {
-        return <div>Kullanıcı bilgisi yükleniyor...</div>;
+        return <div>Loading...</div>;
     }
 
     return (

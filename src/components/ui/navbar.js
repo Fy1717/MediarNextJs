@@ -1,20 +1,47 @@
 "use client"
 
+import '../../styles/global.css'; 
 import { useEffect, useState } from 'react';
-import Link from 'next/link'; // Düzeltme yapıldı
-import { useHydrateStore } from '../store/store';
+import Link from 'next/link'; 
+import { useHydrateStore } from '../../store/store';
+import useStore from '../../store/store';
+import socketClient from '../../app/socketClient';
+
 
 const Navbar = () => {
+  const hasNotifications = useStore(state => state.notifications.length > 0);
+  const resetNotifications = useStore(state => state.resetNotifications);
+
+  const handleNotificationsClick = () => {
+    console.log("XXXXXXXXX");
+    resetNotifications();
+  };
+
   useHydrateStore();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = window.localStorage.getItem('token');
-    const user = window.localStorage.getItem('user');
-    const pathname = window.location.pathname;
+    const token = ((window || {}).localStorage || {}).getItem('token') || "";
+    const user = ((window || {}).localStorage || {}).getItem('user') || "";
+    const pathname = ((window || {}).location || {}).pathname || "";
     
     setIsAuthenticated((token !== null || user !== null) && pathname !== "/login");
   }, []);
+
+
+  const addNotification = useStore(state => state.addNotification);
+  useEffect(() => {
+    const currentUserIdStr = JSON.stringify((JSON.parse(((window || {}).localStorage || {}).user || "{}") || {}).id || 0);
+    const newSocket = socketClient(currentUserIdStr);
+
+    const handleNewNotification = (notification) => {
+      addNotification(notification);
+    };
+
+    newSocket.on('new_notification', handleNewNotification);
+
+    return () => newSocket.off('new_notification', handleNewNotification);
+  }, [addNotification]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -42,9 +69,14 @@ const Navbar = () => {
           <li className="nav-item">
               <Link className="nav-link text-light" href="/network"><i className="fas fa-users"></i> Network </Link>
           </li>
-          <li className="nav-item">
-              <Link className="nav-link text-light" href="/notifications"><i className="fas fa-bell"></i> Notification </Link>
+          
+          <li className="nav-item" onClick={handleNotificationsClick}>
+            <Link className="nav-link text-light" href="/notifications">
+              <i className="fas fa-bell"></i> Notifications
+              {hasNotifications && <span className="notification-dot"></span>}
+            </Link>
           </li>
+          
           <li className="nav-item">
               <Link className="nav-link text-light" href="/messages"><i className="fas fa-envelope"></i> Messages </Link>
           </li>

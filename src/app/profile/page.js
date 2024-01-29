@@ -4,9 +4,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import ProfileTopSection from '../../components/profileTopBar';
-import ArticleList from '../../components/articles';
-import UserList from '../../components/users';
+import ProfileTopSection from '../../components/user/profileTopBar';
+import ArticleList from '../../components/article/articles';
+import UserList from '../../components/user/users';
 
 function Profile() {
   const [articles, setArticles] = useState([]);
@@ -17,12 +17,12 @@ function Profile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setUser(JSON.parse(localStorage.getItem("user")));
+      setUser(JSON.parse((localStorage || {}).getItem("user") || ""));
 
       try {
         const response = await axios.get('http://127.0.0.1:3000/articles/ofUser/', {
           headers: {
-            'Authorization': 'Bearer ' + window.localStorage.token
+            'Authorization': 'Bearer ' + ((window || {}).localStorage || {}).token || ""
           }
         });
         
@@ -38,7 +38,7 @@ function Profile() {
       try {
         const response = await axios.get('http://127.0.0.1:3000/auth/followers', {
           headers: {
-            'Authorization': 'Bearer ' + window.localStorage.token
+            'Authorization': 'Bearer ' + ((window || {}).localStorage || {}).token || ""
           }
         });
         
@@ -54,7 +54,7 @@ function Profile() {
       try {
         const response = await axios.get('http://127.0.0.1:3000/auth/followings', {
           headers: {
-            'Authorization': 'Bearer ' + window.localStorage.token
+            'Authorization': 'Bearer ' + ((window || {}).localStorage || {}).token || ""
           }
         });
         

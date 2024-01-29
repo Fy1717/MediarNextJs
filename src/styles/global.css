@@ -15,3 +15,14 @@ main {
   bottom: 0;
   width: 100%;
 }
+
+.notification-dot {
+  height: 8px;
+  width: 8px;
+  background-color: #ff0000;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 5px; /* Ayarlamaya göre değiştirilebilir */
+  position: relative;
+  top: -10px; /* İkonun konumuna göre ayarlayın */
+}

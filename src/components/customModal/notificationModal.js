@@ -2,8 +2,11 @@
 import React from 'react';
 
 const NotificationModal = ({ notification, show, onHide }) => {
+  const now = new Date();
+  const username = (JSON.parse(((window || {}).localStorage || {}).user || "{}") || {}).username || "";
+
   return (
-    <div className={`modal ${show ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: show ? 'block' : 'none' }}>
+    <div className={`modal ${show ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: show ? 'block' : 'none', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '1000'}}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
@@ -15,9 +18,9 @@ const NotificationModal = ({ notification, show, onHide }) => {
           <div className="modal-body">
             {notification && (
               <>
-                <p><strong>{notification.userName}</strong></p>
-                <p>{notification.text}</p>
-                <small className="text-muted">{notification.time}</small>
+                <p><strong>{notification.message.split(" ")[0]}</strong></p>
+                <p>{notification.message.replace(username + " kullanıcısını", "sizi")}</p>
+                <small className="text-muted">{now.getMinutes() === new Date(notification.time).getMinutes() ? "Now" : `${Math.floor((now - new Date(notification.time)) / 60000)}mn`}</small>
               </>
             )}
           </div>

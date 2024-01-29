@@ -3,8 +3,8 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
-import MessageList from '../../components/messageList';
-import MessageView from '../../components/messageView';
+import MessageList from '../../components/message/messageList';
+import MessageView from '../../components/message/messageView';
 
 const Messages = () => {
   const [messages] = useState([

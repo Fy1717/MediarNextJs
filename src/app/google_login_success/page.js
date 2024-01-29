@@ -12,7 +12,7 @@ const GoogleLoginSuccess = () => {
         console.log("user in google success :", userDataObject);
         console.log("token in google success :", token);
 
-        if (userDataObject) {
+        if (userDataObject && window.localStorage) {
             window.localStorage.user = JSON.stringify(userDataObject);
             window.localStorage.token = token;
 

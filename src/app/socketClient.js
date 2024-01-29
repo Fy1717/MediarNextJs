@@ -10,7 +10,7 @@ const socketClient = (userId) => {
   });
 
   socket.on("connect_error", (err) => {
-    console.log(`Connection error: ${err.message}`);
+    //console.log(`Connection error: ${err.message}`);
   });
 
   /* test event

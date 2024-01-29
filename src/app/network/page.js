@@ -4,7 +4,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import UserList from '../../components/users';
+import UserList from '../../components/user/users';
 
 function Network() {
   const [followers, setFollowers] = useState([]);
@@ -18,7 +18,7 @@ function Network() {
       try {
         const response = await axios.get('http://127.0.0.1:3000/auth/followers', {
           headers: {
-            'Authorization': 'Bearer ' + window.localStorage.token
+            'Authorization': 'Bearer ' + ((window || {}).localStorage || {}).token || ""
           }
         });
         
@@ -34,7 +34,7 @@ function Network() {
       try {
         const response = await axios.get('http://127.0.0.1:3000/auth/followings', {
           headers: {
-            'Authorization': 'Bearer ' + window.localStorage.token
+            'Authorization': 'Bearer ' + ((window || {}).localStorage || {}).token || ""
           }
         });
         
