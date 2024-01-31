@@ -1,20 +1,20 @@
 // addUser.js (Register form componenti)
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import useStore from '../../store/store';
-import Link from 'next/link';
+import React, { useState } from "react";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import useStore from "../../store/store";
+import Link from "next/link";
 
 const Register = () => {
   const { setUser } = useStore();
 
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    name: '',
-    email: ''
+    username: "",
+    password: "",
+    name: "",
+    email: "",
   });
 
   const handleInputChange = (e) => {
@@ -24,37 +24,39 @@ const Register = () => {
   };
 
   const login = async (formDataWithFile) => {
-
     try {
-      const response = await axios.post('http://127.0.0.1:3000/auth/register', formDataWithFile);
-      
+      const response = await axios.post(
+        "http://127.0.0.1:3000/auth/register",
+        formDataWithFile
+      );
+
       console.log("DATA : ", response);
 
       if (response.status == 200) {
-        window.location.href = '/login'; 
+        window.location.href = "/login";
       } else {
         //window.alert("kayıt yapılırken hata")
       }
     } catch (error) {
-      console.error('kayıt yapılırken hata oluştu:', error);
+      console.error("kayıt yapılırken hata oluştu:", error);
 
-      window.alert("kayıt yapılırken hata")
+      window.alert("kayıt yapılırken hata");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const formDataWithFile = new FormData();
-      formDataWithFile.append('username', formData.username);
-      formDataWithFile.append('password', formData.password);
-      formDataWithFile.append('name', formData.name);
-      formDataWithFile.append('email', formData.email);
+      formDataWithFile.append("username", formData.username);
+      formDataWithFile.append("password", formData.password);
+      formDataWithFile.append("name", formData.name);
+      formDataWithFile.append("email", formData.email);
 
       login(formDataWithFile);
     } catch (error) {
-      console.error('giriş hatası:', error);
+      console.error("giriş hatası:", error);
     }
   };
 
@@ -115,10 +117,18 @@ const Register = () => {
             </div>
 
             <br />
-            <button type="submit" className="btn btn-primary w-100 mt-3">Register</button>
+            <button type="submit" className="btn btn-primary w-100 mt-3">
+              Register
+            </button>
           </form>
 
-          <Link className="nav-link text-dark w-100 mt-3" href="/login" style={{textAlign: "center"}}>Login</Link>
+          <Link
+            className="nav-link text-dark w-100 mt-3"
+            href="/login"
+            style={{ textAlign: "center" }}
+          >
+            Login
+          </Link>
         </div>
       </div>
       <br />
@@ -128,4 +138,3 @@ const Register = () => {
 };
 
 export default Register;
-

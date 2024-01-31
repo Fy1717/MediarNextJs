@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const ShareArticleModal = ({ isOpen, onClose }) => {
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
 
   /*
   const shareArticle = () => {
@@ -16,34 +16,40 @@ const ShareArticleModal = ({ isOpen, onClose }) => {
     console.log("shareArticle fonksiyonu çağrıldı");
 
     let data = new FormData();
-    data.append('content', content);
+    data.append("content", content);
 
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
-      url: 'http://127.0.0.1:3000/articles/shareArticle',
-      headers: { 
-        'Authorization': 'Bearer ' + ((window || {}).localStorage || {}).token || ""
+      url: "http://127.0.0.1:3000/articles/shareArticle",
+      headers: {
+        Authorization:
+          "Bearer " + ((window || {}).localStorage || {}).token || "",
       },
-      data : data
+      data: data,
     };
 
-    const response = await axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      setContent(''); 
-      onClose(); 
-      window.alert("Shared Successfully"); // Sayfayı yenilemek için
-    })
-    .catch((error) => {
-      console.log("error ", error);
-    });
+    const response = await axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setContent("");
+        onClose();
+        window.alert("Shared Successfully"); // Sayfayı yenilemek için
+      })
+      .catch((error) => {
+        console.log("error ", error);
+      });
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div
+      className="modal d-block"
+      tabIndex="-1"
+      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+    >
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -53,7 +59,9 @@ const ShareArticleModal = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className="modal-body">
-            <p>What about this article? <br /> Share us..</p>
+            <p>
+              What about this article? <br /> Share us..
+            </p>
             <textarea
               className="form-control"
               value={content}
@@ -62,7 +70,11 @@ const ShareArticleModal = ({ isOpen, onClose }) => {
             />
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-primary" onClick={shareArticle}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={shareArticle}
+            >
               Share
             </button>
           </div>
