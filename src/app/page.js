@@ -5,11 +5,14 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ArticleList from "../components/article/articles";
 import TopicList from "../components/topic/topics";
-import Profile from "../components/user/profile";
 import ArticleShareStarter from "../components/article/shareArticle";
 
+
 function MainPage() {
-  const [articles, setArticles] = useState([]);
+  const [articlesOfFollowings, setArticlesOfFollowings] = useState([]);
+  const [articlesOfNonFollowings, setArticlesOfNonFollowings] = useState([]);
+
+  const [activeTab, setActiveTab] = useState('followed');
 
   const fetchData = async () => {
     if (((window || {}).localStorage || {}).token == undefined) {
@@ -17,19 +20,35 @@ function MainPage() {
     }
 
     try {
-      const response = await axios.get("http://127.0.0.1:3000/articles/", {
+      const response = await axios.get("http://127.0.0.1:3000/articles/myfollowings", {
         headers: {
           Authorization:
             "Bearer " + ((window || {}).localStorage || {}).token || "",
         },
       });
 
-      //console.log("DATA : ", response);
-      setArticles(response.data);
+      console.log("DATA myfollowings: ", response);
+      setArticlesOfFollowings(response.data || []);
     } catch (error) {
-      //console.error('Article listesi alınırken hata oluştu:', error);
+      console.error('Article listesi alınırken hata oluştu:', error);
 
-      window.location.href = "/login";
+      //window.location.href = "/login";
+    }
+
+    try {
+      const response = await axios.get("http://127.0.0.1:3000/articles/mynonfollowings", {
+        headers: {
+          Authorization:
+            "Bearer " + ((window || {}).localStorage || {}).token || "",
+        },
+      });
+
+      console.log("DATA mynonfollowings : ", response);
+      setArticlesOfNonFollowings(response.data || []);
+    } catch (error) {
+      console.error('Article listesi alınırken hata oluştu:', error);
+
+      //window.location.href = "/login";
     }
   };
 
@@ -37,36 +56,78 @@ function MainPage() {
     fetchData();
   }, []);
 
+  const handleTabChange = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  const tabsStyle = {
+    display: 'flex',
+    justifyContent: 'center', // İçerikleri yatay eksende ortalar
+    marginBottom: '20px', // İsteğe bağlı olarak biraz boşluk ekleyebilirsiniz
+  };
+  
+  // Tab butonları için genel stil
+  const tabStyle = {
+    padding: '10px 20px',
+    border: 'none',
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    fontSize: '16px',
+    margin: '0 10px', // Butonlar arasında boşluk bırakmak için
+    borderBottom: '3px solid transparent',
+  };
+  
+  // Aktif tab butonu için stil
+  const activeTabStyle = {
+    ...tabStyle,
+    borderBottom: '3px solid blue',
+  };
+  
+
   return (
-    <div>
-      <div className="container">
-        <br />
-        <br />
-        <div className="row">
-          <div className="col-md-2 card">
-            <br />
-            <h5 className="text-center">Topics</h5>
-            <hr />
-            <TopicList />
-          </div>
-
-          <div className="col-md-1"></div>
-
-          <div className="col-md-8">
-            {
-              <div>
-                <ArticleShareStarter />
-                <br />
-                <br />
-                <ArticleList articles={articles} />
-              </div>
-            }
-          </div>
+    <div className="container">
+      <br /><br />
+      <div className="row">
+        <div className="col-md-2 card">
+          <br />
+          <h5 className="text-center">Topics</h5>
+          <hr />
+          <TopicList />
+          {/* Topics listesi */}
         </div>
 
-        <br />
-        <br />
+        <div className="col-md-1"></div>
+
+        <div className="col-md-8">
+          <ArticleShareStarter />
+          <br /><br />
+
+          <div style={tabsStyle} className="tabs">
+            <button
+              style={activeTab === 'followed' ? activeTabStyle : tabStyle}
+              onClick={() => handleTabChange('followed')}
+            >
+              Followed
+            </button>
+            <button
+              style={activeTab === 'nonFollowed' ? activeTabStyle : tabStyle}
+              onClick={() => handleTabChange('nonFollowed')}
+            >
+              Recommended
+            </button>
+          </div>
+
+          <br />
+
+          {activeTab === 'followed' && (
+            <ArticleList articles={articlesOfFollowings} />
+          )}
+          {activeTab === 'nonFollowed' && (
+            <ArticleList articles={articlesOfNonFollowings} />
+          )}
+        </div>
       </div>
+      <br /><br />
     </div>
   );
 }

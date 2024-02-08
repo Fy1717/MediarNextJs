@@ -35,11 +35,9 @@ const Login = () => {
         console.log("user 1 : ", response.data.user.name);
 
         if (response.data && response.data.user) {
-          console.log("user 1 : ", response.data.user);
+          window.localStorage.user = JSON.stringify((response.data || {}).user || {});
 
-          window.localStorage.user = JSON.stringify(response.data.user);
-
-          setUser(response.data.user);
+          setUser((response.data || {}).user || {});
 
           console.log("user 11111111 : ");
         }
@@ -121,8 +119,19 @@ const Login = () => {
             style={{ textAlign: "center" }}
             onClick={loginViaGoogle}
           >
+            <img
+              src="../../google.png" // Google logosunun yolu buraya eklenmeli
+              alt="Google ile giriş yap"
+              style={{
+                width: '20px', // veya ihtiyacınıza göre ayarlayın
+                height: '20px', // veya ihtiyacınıza göre ayarlayın
+                verticalAlign: 'middle', // Logo ve metni aynı hizada tutar
+                marginRight: '8px', // Logonun ve metnin arasında boşluk bırakır
+              }}
+            />
             Google ile giriş yap
           </h3>
+
         </div>
       </div>
       <br />

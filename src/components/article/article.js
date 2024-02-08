@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Article = ({ article: initialArticle }) => {
+const Article = ({ article: initialArticle, onStatusChange, setViewToProfilePage }) => {
   const [article, setArticle] = useState(initialArticle);
 
   const currentUserID =
@@ -10,14 +10,14 @@ const Article = ({ article: initialArticle }) => {
       : null;
   const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState(
     currentUserID &&
-      article.likedUsers.some((user) => user.id === currentUserID)
+      (article.likedUsers || []).some((user) => user.id === currentUserID)
   );
 
   useEffect(() => {
     console.log("XXXXXX");
     setIsLikedByCurrentUser(
       currentUserID &&
-        article.likedUsers.some((user) => user.id === currentUserID)
+        (article.likedUsers || []).some((user) => user.id === currentUserID)
     );
   }, [article, currentUserID]);
 
@@ -98,7 +98,9 @@ const Article = ({ article: initialArticle }) => {
       //console.log("RESPONSE CODE : ", response.status);
 
       if (response.status == 200) {
-        window.alert("Article Removed Successfully");
+        //window.alert("Article Removed Successfully");
+
+        onStatusChange();
       }
     } catch (error) {
       console.error("silme işleminde hata oluştu:", error);
@@ -109,18 +111,32 @@ const Article = ({ article: initialArticle }) => {
     }
   };
 
+  /*
+  <p className="card-text">
+  <small className="text-muted">Puan: {article.point}</small>
+  </p>
+  */
+
   return (
     <div className="card-body">
-      <h5 className="card-title">{article.authorName}</h5>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <img
+          src={`data:image/jpeg;base64,${article.authorImage}`}
+          style={{
+            maxWidth: '100px',
+            maxHeight: '100px',
+            borderRadius: '50%',
+            marginRight: '10px', // Resim ve metin arasında boşluk bırakır
+          }}
+        />
+        <h5 className="card-title">{article.authorName}</h5>
+      </div>
       <hr />
       <p className="card-text">{article.content}</p>
-      <p className="card-text">
-        <small className="text-muted">Puan: {article.point}</small>
-      </p>
 
       <div className="d-flex justify-content-between align-items-center">
         <ul className="list-group list-group-flush">
-          {article.likedUsers.length + " liked"}
+          {(article.likedUsers || []).length + " liked"}
         </ul>
         <small>{new Date(article.createdAt).toLocaleDateString()}</small>
       </div>

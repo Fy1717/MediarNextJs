@@ -13,7 +13,7 @@ function Profile() {
   return (
     <div>
       <div className="list-group">
-        {user.image.indexOf("http") === 0 ? (
+        {user || {}.image || "".indexOf("http") === 0 ? (
           <img
             src={user.image}
             style={{

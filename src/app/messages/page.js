@@ -27,6 +27,10 @@ const Messages = () => {
     setCurrentMessage(message);
   };
 
+  if (window.localStorage.token == undefined) {
+    window.location.href = "/login";
+  }
+
   return (
     <div className="container">
       <br />

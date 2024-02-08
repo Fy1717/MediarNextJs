@@ -8,7 +8,7 @@ import ProfileTopSection from "../../components/user/profileTopBar";
 import ArticleList from "../../components/article/articles";
 import UserList from "../../components/user/users";
 
-function Profile() {
+function Author(authorId) {
   const [articles, setArticles] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [followings, setFollowings] = useState([]);
@@ -20,8 +20,6 @@ function Profile() {
   }
 
   const fetchData = async () => {
-    setUser(JSON.parse((localStorage || {}).getItem("user") || ""));
-
     try {
       const response = await axios.get(
         "http://127.0.0.1:3000/articles/self/",
@@ -35,7 +33,7 @@ function Profile() {
 
       console.log("Article List : ", response);
 
-      setArticles(response.data || []);
+      setArticles(response.data || []);
     } catch (error) {
       console.error("Article listesi alınırken hata oluştu:", error);
 
@@ -55,7 +53,7 @@ function Profile() {
 
       console.log("Follower List : ", response);
 
-      setFollowers((response.data || {}).followers || []);
+      setFollowers((response.data || {}).followers || []);
     } catch (error) {
       console.error("Article listesi alınırken hata oluştu:", error);
 
@@ -153,4 +151,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default Author;

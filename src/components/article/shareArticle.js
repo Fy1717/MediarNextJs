@@ -25,8 +25,12 @@ const ArticleShareStarter = () => {
           borderRadius: "10px",
           marginBottom: "5px",
         }}
-      >
-        {user.image.indexOf("http") === 0 ? (
+
+        onClick={openModal}
+        >
+      
+        {user || {}.image || "".indexOf("http") === 0 ? (
+          <>
           <img
             src={user.image}
             style={{
@@ -35,7 +39,11 @@ const ArticleShareStarter = () => {
               borderRadius: "50%",
             }}
           />
+
+          <h3 style={{margin: "5%"}}>Share an article..</h3>
+          </>
         ) : (
+          <>
           <img
             src={`data:image/jpeg;base64,${user.image}`}
             style={{
@@ -44,19 +52,11 @@ const ArticleShareStarter = () => {
               borderRadius: "50%",
             }}
           />
-        )}
 
-        <input
-          type="text"
-          placeholder="Share an article.."
-          onClick={openModal}
-          style={{
-            border: "none",
-            flex: "1",
-            marginRight: "10px",
-            marginLeft: "10px",
-          }}
-        />
+          <h3 style={{margin: "5%"}}>Share an article..</h3>
+          </>
+          
+        )}
       </div>
 
       <ShareArticleModal isOpen={modalOpen} onClose={closeModal} />

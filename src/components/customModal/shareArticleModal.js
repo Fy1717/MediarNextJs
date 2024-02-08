@@ -35,7 +35,7 @@ const ShareArticleModal = ({ isOpen, onClose }) => {
         console.log(JSON.stringify(response.data));
         setContent("");
         onClose();
-        window.alert("Shared Successfully"); // Sayfayı yenilemek için
+        //window.alert("Shared Successfully"); // Sayfayı yenilemek için
       })
       .catch((error) => {
         console.log("error ", error);
